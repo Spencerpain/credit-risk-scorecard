@@ -45,11 +45,11 @@ def train_model():
     model.fit(X_train, y_train)
     return model, X, X_test, y_test
 
-def prob_to_score(prob, pdo=20, base_score=600, base_odds=50):
+def prob_to_score(prob, pdo=20, base_score=660, base_odds=50):
     factor = pdo / np.log(2)
     offset = base_score - factor * np.log(base_odds)
     score = offset - factor * np.log(prob / (1 - prob + 1e-10))
-    return np.clip(score, 300, 850)
+    return np.clip(score, 300, 900)
 
 df = load_data()
 model, X, X_test, y_test = train_model()
@@ -133,9 +133,13 @@ with tab3:
         col1.metric("Credit Score", score)
         col2.metric("Default Probability", f"{prob:.1%}")
 
-        if score >= 700:
-            st.success("Low Risk")
-        elif score >= 600:
-            st.warning("Medium Risk")
+        if score >= 760:
+            st.success("Excellent — Very Low Risk")
+        elif score >= 725:
+            st.success("Very Good — Low Risk")
+        elif score >= 660:
+            st.warning("Good — Moderate Risk")
+        elif score >= 560:
+            st.warning("Fair — Higher Risk")
         else:
-            st.error("High Risk")
+            st.error("Poor — High Risk")
