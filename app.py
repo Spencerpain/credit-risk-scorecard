@@ -70,9 +70,10 @@ with tab1:
     st.subheader("Feature Distributions")
     feature = st.selectbox("Select feature", X.columns)
     fig, ax = plt.subplots()
-    df[feature].hist(bins=50, ax=ax)
+    ax.hist(df[feature].dropna(), bins=50)
     ax.set_title(feature)
     st.pyplot(fig)
+    plt.close(fig)
 
 with tab2:
     st.subheader("Model Performance")
@@ -88,6 +89,7 @@ with tab2:
         ax.set_xlabel("Credit Score")
         ax.set_ylabel("Count")
         st.pyplot(fig)
+        plt.close(fig)
 
     with col2:
         st.write("**Feature Importance**")
@@ -99,6 +101,7 @@ with tab2:
         sns.barplot(data=importance, x="Coefficient", y="Feature", ax=ax)
         plt.tight_layout()
         st.pyplot(fig)
+        plt.close(fig)
 
 with tab3:
     st.subheader("Credit Score Calculator")
