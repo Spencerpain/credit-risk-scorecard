@@ -36,7 +36,8 @@ def load_data():
     return df
 
 @st.cache_resource
-def train_model(df):
+def train_model():
+    df = load_data()
     X = df.drop("SeriousDlqin2yrs", axis=1)
     y = df["SeriousDlqin2yrs"]
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
@@ -51,7 +52,7 @@ def prob_to_score(prob, pdo=20, base_score=600, base_odds=50):
     return np.clip(score, 300, 850)
 
 df = load_data()
-model, X, X_test, y_test = train_model(df)
+model, X, X_test, y_test = train_model()
 y_pred = model.predict_proba(X_test)[:, 1]
 auc = roc_auc_score(y_test, y_pred)
 
