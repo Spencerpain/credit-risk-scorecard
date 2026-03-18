@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
-from sklearn.metrics import roc_auc_score, ConfusionMatrixDisplay, confusion_matrix
+from sklearn.metrics import roc_auc_score
 
 st.set_page_config(page_title="Credit Risk Scorecard", layout="wide")
 st.title("Credit Risk Scorecard")
@@ -25,10 +25,9 @@ def load_data():
                 import json
                 json.dump({"username": username, "token": key}, f)
             os.chmod(kaggle_json, 0o600)
-        subprocess.run(
-            ["kaggle", "competitions", "download", "-c", "GiveMeSomeCredit", "-p", "data"],
-            check=True
-        )
+        import kaggle
+        kaggle.api.authenticate()
+        kaggle.api.competition_download_files("GiveMeSomeCredit", path="data", quiet=False)
         with zipfile.ZipFile("data/GiveMeSomeCredit.zip", "r") as z:
             z.extractall("data")
     df = pd.read_csv("data/cs-training.csv", index_col=0)
