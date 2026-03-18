@@ -12,6 +12,25 @@ st.title("Credit Risk Scorecard")
 
 @st.cache_data
 def load_data():
+    import os, zipfile, subprocess
+    if not os.path.exists("data/cs-training.csv"):
+        os.makedirs("data", exist_ok=True)
+        kaggle_dir = os.path.expanduser("~/.kaggle")
+        os.makedirs(kaggle_dir, exist_ok=True)
+        kaggle_json = os.path.join(kaggle_dir, "kaggle.json")
+        if not os.path.exists(kaggle_json):
+            username = st.secrets["KAGGLE_USERNAME"]
+            key = st.secrets["KAGGLE_KEY"]
+            with open(kaggle_json, "w") as f:
+                import json
+                json.dump({"username": username, "token": key}, f)
+            os.chmod(kaggle_json, 0o600)
+        subprocess.run(
+            ["kaggle", "competitions", "download", "-c", "GiveMeSomeCredit", "-p", "data"],
+            check=True
+        )
+        with zipfile.ZipFile("data/GiveMeSomeCredit.zip", "r") as z:
+            z.extractall("data")
     df = pd.read_csv("data/cs-training.csv", index_col=0)
     df["MonthlyIncome"] = df["MonthlyIncome"].fillna(df["MonthlyIncome"].median())
     df["NumberOfDependents"] = df["NumberOfDependents"].fillna(df["NumberOfDependents"].median())
