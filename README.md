@@ -1,5 +1,9 @@
 # Credit Risk Scorecard
 
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://credit-risk-scorecard-r7ue6drwtpg72hlobfde5u.streamlit.app/)
+
+**Live App:** https://credit-risk-scorecard-r7ue6drwtpg72hlobfde5u.streamlit.app/
+
 Predict probability of default (PD) and compute expected loss metrics using the [Give Me Some Credit](https://www.kaggle.com/competitions/GiveMeSomeCredit) dataset.
 
 **Models:**
